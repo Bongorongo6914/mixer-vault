@@ -20,3 +20,14 @@ interface IERC20 {
 
 contract MixerVault {
     string public constant name = "Mixer Vault Shares";
+    string public constant symbol = "mvSHARE";
+    uint8 public constant decimals = 18;
+
+    IERC20 public immutable underlying;
+    address public immutable feeRecipient;
+    uint256 public immutable performanceFeeBps;
+    uint256 public immutable managementFeeBps;
+    uint256 public immutable harvestBonusBps;
+    uint256 public immutable minLockBlocks;
+
+    uint256 public totalShares;
