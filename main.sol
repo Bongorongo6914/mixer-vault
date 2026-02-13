@@ -64,3 +64,14 @@ contract MixerVault {
     }
 
     function withdraw(uint256 shares) external returns (uint256 assets) {
+        require(shares > 0 && shares <= sharesOf[msg.sender], "MixerVault: invalid shares");
+        require(block.number >= depositBlockOf[msg.sender] + minLockBlocks, "MixerVault: lock");
+        assets = (shares * _totalAssetsStored()) / totalShares;
+        totalShares -= shares;
+        sharesOf[msg.sender] -= shares;
+        underlying.transfer(msg.sender, assets);
+        emit Withdraw(msg.sender, assets, shares);
+        return assets;
+    }
+
+    function harvest(uint256 yieldAmount) external {
