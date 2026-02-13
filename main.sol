@@ -75,3 +75,14 @@ contract MixerVault {
     }
 
     function harvest(uint256 yieldAmount) external {
+        require(yieldAmount > 0, "MixerVault: zero yield");
+        underlying.transferFrom(msg.sender, address(this), yieldAmount);
+        if (totalShares > 0) {
+            uint256 perfFee = (yieldAmount * performanceFeeBps) / BPS_DENOMINATOR;
+            uint256 bonus = (yieldAmount * harvestBonusBps) / BPS_DENOMINATOR;
+            uint256 toVault = yieldAmount - perfFee;
+            virtualYieldPerShare += (toVault * 1e18) / totalShares;
+            lastHarvestBlock = block.number;
+            if (perfFee > 0 && feeRecipient != address(0)) {
+                underlying.transfer(feeRecipient, perfFee);
+            }
