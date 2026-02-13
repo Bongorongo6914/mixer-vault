@@ -53,3 +53,14 @@ contract MixerVault {
     }
 
     function deposit(uint256 assets) external returns (uint256 shares) {
+        require(assets > 0, "MixerVault: zero deposit");
+        underlying.transferFrom(msg.sender, address(this), assets);
+        shares = totalShares == 0 ? assets : (assets * totalShares) / _totalAssetsStored();
+        totalShares += shares;
+        sharesOf[msg.sender] += shares;
+        depositBlockOf[msg.sender] = block.number;
+        emit Deposit(msg.sender, assets, shares);
+        return shares;
+    }
+
+    function withdraw(uint256 shares) external returns (uint256 assets) {
