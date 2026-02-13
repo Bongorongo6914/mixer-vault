@@ -86,3 +86,14 @@ contract MixerVault {
             if (perfFee > 0 && feeRecipient != address(0)) {
                 underlying.transfer(feeRecipient, perfFee);
             }
+            emit Harvest(yieldAmount, perfFee, bonus);
+        }
+    }
+
+    function _totalAssetsStored() internal view returns (uint256) {
+        uint256 balance = underlying.balanceOf(address(this));
+        return balance;
+    }
+
+    function totalAssets() external view returns (uint256) {
+        return _totalAssetsStored();
