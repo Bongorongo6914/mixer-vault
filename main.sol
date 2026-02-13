@@ -108,3 +108,6 @@ contract MixerVault {
     }
 
     function convertToShares(uint256 assets) external view returns (uint256) {
+        return totalShares == 0 ? assets : (assets * totalShares) / _totalAssetsStored();
+    }
+}
