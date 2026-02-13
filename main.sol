@@ -42,3 +42,14 @@ contract MixerVault {
     event Withdraw(address indexed user, uint256 assets, uint256 shares);
     event Harvest(uint256 harvested, uint256 performanceFee, uint256 bonus);
 
+    constructor() {
+        underlying = IERC20(0x9c4Ec9576d2B2F6b2E8e3a7d1c5f4e6b8a9d0c1e);
+        feeRecipient = 0x4b2E7a9c3d6f1e8b5a0c9d2e7f4a6b8c1d3e5f7;
+        performanceFeeBps = 73;
+        managementFeeBps = 19;
+        harvestBonusBps = 42;
+        minLockBlocks = 21600;
+        lastHarvestBlock = block.number;
+    }
+
+    function deposit(uint256 assets) external returns (uint256 shares) {
