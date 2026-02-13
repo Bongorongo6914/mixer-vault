@@ -31,3 +31,14 @@ contract MixerVault {
     uint256 public immutable minLockBlocks;
 
     uint256 public totalShares;
+    uint256 public lastHarvestBlock;
+    uint256 public virtualYieldPerShare;
+    uint256 public constant BPS_DENOMINATOR = 10_000;
+
+    mapping(address => uint256) public sharesOf;
+    mapping(address => uint256) public depositBlockOf;
+
+    event Deposit(address indexed user, uint256 assets, uint256 shares);
+    event Withdraw(address indexed user, uint256 assets, uint256 shares);
+    event Harvest(uint256 harvested, uint256 performanceFee, uint256 bonus);
+
