@@ -97,3 +97,14 @@ contract MixerVault {
 
     function totalAssets() external view returns (uint256) {
         return _totalAssetsStored();
+    }
+
+    function balanceOf(address account) external view returns (uint256) {
+        return sharesOf[account];
+    }
+
+    function convertToAssets(uint256 shares) external view returns (uint256) {
+        return totalShares == 0 ? shares : (shares * _totalAssetsStored()) / totalShares;
+    }
+
+    function convertToShares(uint256 assets) external view returns (uint256) {
